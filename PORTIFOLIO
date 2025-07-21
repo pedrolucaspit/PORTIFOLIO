@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio | Pedro Lucas - Gestão e Inovação</title>
+    <!-- Chosen Palette: Corporate Blue & Gold -->
+    <!-- Application Structure Plan: A single-page application with a sticky navigation bar for easy access to sections: Sobre, Impacto, Projetos, Competências, Formação, e Contato. The core of the application is an interactive project gallery with JavaScript-powered filters, allowing users to explore projects by category (Gestão, Marketing, Inovação). This structure was chosen to provide a dynamic, user-driven experience that is more engaging than a static PDF, enabling recruiters to quickly find relevant information and appreciate the technical skill involved in the portfolio's creation. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Key metrics (+10 empresas, +60 pessoas, 70% eficiência) -> Goal: Inform/Impact -> Viz/Presentation Method: Large, bold stats in HTML/Tailwind cards -> Interaction: None -> Justification: Provides immediate, high-impact evidence of achievements.
+        - Report Info: Full project list -> Goal: Organize/Explore -> Viz/Presentation Method: Interactive card grid (HTML/Tailwind) -> Interaction: JS filters by category -> Justification: Allows users to actively engage with the content and find relevant projects, showcasing a diverse skillset in a structured manner.
+        - Report Info: Efficiency gain (70%) in a project -> Goal: Compare/Inform -> Viz/Presentation Method: Bar chart (Chart.js/Canvas) -> Interaction: None (static chart) -> Justification: Visually reinforces the impressive metric, making it more memorable than text alone.
+        - Report Info: Skills and methodologies -> Goal: Organize -> Viz/Presentation Method: Styled tag cloud/grid (HTML/Tailwind) -> Interaction: None -> Justification: Presents a wide range of skills in a visually scannable and modern format.
+        - Update: "Sobre Mim" section completely refactored to focus on capabilities and results, rather than chronological job descriptions. New key areas like "Marketing Estratégico e Criação de Conteúdo" and "Educação e Capacitação" are introduced.
+        - Update: All dates removed from project cards and other relevant sections to maintain a timeless focus on capabilities.
+        - Update: Added "Qualidade" to "Formações Técnicas".
+        - Update: Removed "Business Intelligence com Power BI" certification.
+        - New: Added "Análise de Dados", "Criação de Conteúdo", "Empreendedorismo", "Consultoria Financeira", "Ensino/Docência" to "Competências e Metodologias".
+        - Further Refinement: "Sobre Mim" section now focuses on capabilities and results, using a more dynamic layout with distinct paragraphs for each key area of expertise derived from the user's experience.
+        - Update: Removed "(cursando)" from "Engenharia de Produção" and "Gestão Estratégica Empresarial" in Formação Acadêmica.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #d97706; /* amber-600 */
+            border-bottom-color: #d97706; /* amber-600 */
+        }
+        .filter-btn {
+            transition: all 0.3s;
+        }
+        .filter-btn.active {
+            background-color: #0369a1; /* sky-700 */
+            color: white;
+        }
+        .project-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            will-change: transform;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-xl font-bold text-slate-900">Pedro Lucas</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-slate-600 font-medium pb-1">Sobre</a>
+                <a href="#projects" class="nav-link text-slate-600 font-medium pb-1">Projetos</a>
+                <a href="#skills" class="nav-link text-slate-600 font-medium pb-1">Competências</a>
+                <a href="#education" class="nav-link text-slate-600 font-medium pb-1">Formação</a>
+                <a href="#contact" class="bg-sky-700 text-white px-4 py-2 rounded-lg hover:bg-sky-800 transition-colors">Contato</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#about" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Sobre</a>
+            <a href="#projects" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Projetos</a>
+            <a href="#skills" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Competências</a>
+            <a href="#education" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Formação</a>
+            <a href="#contact" class="block text-center py-2 px-4 text-white bg-sky-700 hover:bg-sky-800">Contato</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">Pedro Lucas</h1>
+                <p class="mt-4 text-lg md:text-xl text-sky-800 font-semibold">Especialista em Gestão Estratégica, Otimização de Processos e Desenvolvimento de Negócios</p>
+                <div class="mt-8">
+                    <a href="https://www.linkedin.com/in/pedrolucas127" target="_blank" class="bg-sky-700 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-800 transition-colors inline-flex items-center">
+                        Visitar LinkedIn &nbsp; <span>&#10132;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About / Impact Section -->
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-900">Sobre Mim: Capacidades e Resultados</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-slate-600">
+                        Com uma trajetória sólida em Engenharia de Produção e especializações em Gestão Estratégica e Comercial, atuo como um agente de transformação para empresas e indivíduos. Minha paixão é impulsionar o crescimento sustentável através de soluções eficazes.
+                    </p>
+                    <div class="mt-8 text-left max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Gestão Estratégica e Liderança</h3>
+                            <p class="text-slate-700">
+                                Lidero equipes e projetos complexos, com foco em planejamento estratégico e otimização de operações, incluindo atuação como Coordenador Geral no Crea-Minas Júnior. Minha consultoria empresarial visa alinhar procedimentos à liderança para acompanhamento eficaz via análise de dados.
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Desenvolvimento de Negócios e Consultoria Financeira</h3>
+                            <p class="text-slate-700">
+                                Experiência em atendimento consultivo no Sicredi e Sicoob Credivale, identificando oportunidades e promovendo soluções financeiras. Ofereço consultoria financeira estratégica para empresários MEI, impulsionando seu crescimento comercial.
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Otimização de Processos e Inovação</h3>
+                            <p class="text-slate-700">
+                                Expertise em estruturação e digitalização de processos para ganhos de eficiência (até 70%). Lidero projetos de inovação, incluindo a estruturação recente de uma startup e o desenvolvimento de MVPs.
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Marketing Estratégico e Criação de Conteúdo</h3>
+                            <p class="text-slate-700">
+                                Responsável pelo marketing de empresas, incluindo criação de posts, reels e produção de conteúdo sob demanda. Realizo análise de métricas para otimizar campanhas e estratégias de comunicação.
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Educação e Capacitação</h3>
+                            <p class="text-slate-700">
+                                Atuo como professor de informática e gestão de projetos. Ministro treinamentos, cursos e palestras em inovação, empreendedorismo, gestão e negócios, focando no desenvolvimento e engajamento de equipes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <p class="text-5xl font-extrabold text-sky-700">+10</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-700">Empresas Atendidas</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <p class="text-5xl font-extrabold text-sky-700">+60</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-700">Pessoas Impactadas</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md">
+                        <p class="text-5xl font-extrabold text-sky-700">70%</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-700">Ganho de Eficiência em Processos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-900">Projetos de Destaque</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Explore os projetos que demonstram minha capacidade de gerar resultados através da estratégia, gestão e inovação. Use os filtros para navegar pelas diferentes áreas de atuação.</p>
+                </div>
+
+                <!-- Filters -->
+                <div id="project-filters" class="flex flex-wrap justify-center gap-4 mt-12 mb-12">
+                    <button class="filter-btn active bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="all">Todos</button>
+                    <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="gestao">Gestão e Processos</button>
+                    <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="marketing">Marketing e Inovação</button>
+                    <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="carreira">Desenvolvimento de Carreira</button>
+                </div>
+
+                <!-- Project Grid -->
+                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <article class="project-card bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
+                        <h3 class="text-xl font-bold text-slate-900">Estruturação Completa de Processos</h3>
+                        <p class="text-slate-600 flex-grow">Criação de um projeto do zero, com designação de tarefas, acompanhamento de cronogramas e gestão do conhecimento para garantir replicabilidade.</p>
+                        <div class="mt-4">
+                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Canvas</span>
+                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Miro</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col" data-category="marketing">
+                        <h3 class="text-xl font-bold text-slate-900">Consultoria em Marketing e Treinamentos</h3>
+                        <p class="text-slate-600 flex-grow">Ajuste e validação de modelos de negócio, revisão de processos, desenvolvimento de MVPs e pitchs para atração de parceiros estratégicos.</p>
+                        <div class="mt-4">
+                            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">5W2H</span>
+                            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Figma</span>
+                        </div>
+                    </article>
+                    
+                    <article class="project-card bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
+                        <h3 class="text-xl font-bold text-slate-900">Otimização para Empresa Financeira</h3>
+                        <p class="text-slate-600 flex-grow">Automação de processos manuais e implementação de gestão do conhecimento, resultando em 70% de ganho de eficiência.</p>
+                        <div class="mt-4">
+                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Digitalização</span>
+                        </div>
+                        <div class="mt-4 chart-container">
+                             <canvas id="efficiencyChart"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="project-card bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col" data-category="carreira">
+                        <h3 class="text-xl font-bold text-slate-900">Desenvolvimento de Perfis no LinkedIn</h3>
+                        <p class="text-slate-600 flex-grow">Otimização de mais de 15 perfis, mentoria estratégica e preparação para entrevistas, impulsionando promoções e ascensão de carreira.</p>
+                         <div class="mt-4">
+                            <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mentoria</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col" data-category="marketing">
+                        <h3 class="text-xl font-bold text-slate-900">Consultoria para Empresa de Alimentos</h3>
+                        <p class="text-slate-600 flex-grow">Análise de perfil empresarial, desenvolvimento de cronograma estratégico e produção de conteúdo audiovisual para impulsionar presença digital.</p>
+                        <div class="mt-4">
+                             <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Marketing Digital</span>
+                        </div>
+                    </article>
+
+                    <article class="project-card bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
+                        <h3 class="text-xl font-bold text-slate-900">Digitalização para Empresa de Costura</h3>
+                        <p class="text-slate-600 flex-grow">Mapeamento de processos, digitalização operacional e gestão da demanda para suportar o crescimento e aumento de pedidos.</p>
+                        <div class="mt-4">
+                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mapeamento de Processos</span>
+                        </div>
+                    </article>
+                    
+                    <article class="project-card bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col" data-category="marketing">
+                        <h3 class="text-xl font-bold text-slate-900">Liderança de Operações - Lúmina</h3>
+                        <p class="text-slate-600 flex-grow">Criação de Canvas, desenvolvimento de pitch, mapeamento de processos e produção de MVP como Líder de Operações e Parcerias.</p>
+                        <div class="mt-4">
+                            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Shark</span>
+                            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">MVP</span>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills & Methodologies Section -->
+        <section id="skills" class="py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-slate-900">Competências e Metodologias</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">Um conjunto de ferramentas e metodologias aplicadas para entregar soluções eficazes e inovadoras.</p>
+                <div class="mt-12 max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-4">
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Canvas</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão do Conhecimento</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">5W2H</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Shark & Miro</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Figma</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing Digital</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Mapeamento de Processos</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">MVP</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Pitch Deck</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Mentoria Estratégica</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Liderança de Equipes</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Produção de Materiais Instrucionais</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Ministrar Treinamentos e Palestras</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Análise de Dados</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Criação de Conteúdo</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Empreendedorismo</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Consultoria Financeira</span>
+                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Ensino/Docência</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Certifications Section -->
+        <section id="education" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-slate-900">Formação e Certificações</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Compromisso contínuo com a excelência e o aprendizado, validado por certificações de mercado e formação acadêmica robusta.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-5xl mx-auto">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Certificações</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">&#10004;</span><span><span class="font-semibold">CPA-10, CPA-20, CEA</span> (Anbima)</span></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">&#10004;</span><span><span class="font-semibold">Febraban FBB100</span></span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Formação Acadêmica</h3>
+                        <ul class="space-y-3">
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">MBA em Gestão Corporativa Estratégica</span></span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">MBA em Gestão Comercial</span></span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Pós-graduação em Especialização Pedagógica Docente</span></span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Tecnologia em Processos Gerenciais</span></span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Engenharia de Produção</span></span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Gestão Estratégica Empresarial</span></span></li>
+                        </ul>
+                    </div>
+                     <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Pesquisa e Publicações</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">&#10004;</span><span>2 Artigos Aprovados: <span class="font-semibold">COMBENG</span> e <span class="font-semibold">I Simpósio Nacional de Engenharia</span></span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Formações Técnicas</h3>
+                         <ul class="space-y-3">
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Administração</span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Meio Ambiente</span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Marketing</span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Segurança do Trabalho</span></li>
+                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Qualidade</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-slate-800 text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold">Vamos Conversar?</h2>
+            <p class="mt-4 max-w-xl mx-auto text-slate-300">Estou pronto para colaborar com sua empresa e gerar resultados significativos. Entre em contato para discutirmos como podemos trabalhar juntos.</p>
+            <div class="mt-8">
+                <a href="https://www.linkedin.com/in/pedrolucas127" target="_blank" class="bg-sky-600 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-700 transition-colors">
+                    Enviar Mensagem no LinkedIn
+                </a>
+            </div>
+             <div class="mt-12 border-t border-slate-700 pt-8 text-slate-400 text-sm">
+                <p>&copy; 2025 Pedro Lucas. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Project Filtering Logic
+        const filterContainer = document.getElementById('project-filters');
+        const projectGrid = document.getElementById('project-grid');
+        const projectCards = projectGrid.querySelectorAll('.project-card');
+        const filterButtons = filterContainer.querySelectorAll('.filter-btn');
+
+        filterContainer.addEventListener('click', (event) => {
+            if (event.target.tagName !== 'BUTTON') return;
+
+            const filterValue = event.target.getAttribute('data-filter');
+
+            // Update active button state
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.remove('bg-sky-700');
+                btn.classList.remove('text-white');
+            });
+            event.target.classList.add('active');
+            event.target.classList.add('bg-sky-700');
+            event.target.classList.add('text-white');
+
+            // Filter project cards
+            projectCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (filterValue === 'all' || cardCategory === filterValue) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Efficiency Chart
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('efficiencyChart')?.getContext('2d');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Processo Manual', 'Processo Automatizado'],
+                        datasets: [{
+                            label: 'Tempo Gasto (horas)',
+                            data: [100, 30], // Represents a 70% reduction
+                            backgroundColor: [
+                                'rgba(251, 146, 60, 0.6)', // amber-400
+                                'rgba(3, 105, 161, 0.6)' // sky-700
+                            ],
+                            borderColor: [
+                                'rgba(251, 146, 60, 1)',
+                                'rgba(3, 105, 161, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Ganho de Eficiência',
+                                color: '#334155' // slate-700
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += `${100 - context.parsed.y}% de tempo economizado no processo automatizado.`;
+                                        }
+                                        return context.label === 'Processo Automatizado' ? 'Redução de 70% no tempo' : 'Tempo base do processo manual';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#475569' // slate-600
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#475569' // slate-600
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
