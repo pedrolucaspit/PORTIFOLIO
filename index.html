@@ -1,174 +1,222 @@
-<!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio | Pedro Lucas Moraes - Negócios Águia</title>
-    <!-- Chosen Palette: Corporate Blue & Gold -->
-    <!-- Application Structure Plan: A single-page application with a sticky navigation bar for easy access to sections: Empresa, Sobre, Projetos, Competências, Formação, Colaboradores e Contato. O core da aplicação é uma galeria de projetos interativa com filtros JavaScript, permitindo aos usuários explorar projetos por categoria (Gestão, Marketing, Inovação). Esta estrutura foi escolhida para proporcionar uma experiência dinâmica e orientada pelo usuário, mais envolvente do que um PDF estático, permitindo que os recrutadores encontrem rapidamente informações relevantes e apreciem a habilidade técnica envolvida na criação do portfólio. A nova seção "Colaboradores" adiciona uma dimensão de equipe, mostrando a capacidade conjunta da consultoria. A navegação entre o portfólio principal e o perfil da colaboradora é feita via JavaScript, ocultando e exibindo seções dentro da mesma página. -->
-    <!-- Visualization & Content Choices: 
-        - Report Info: Key metrics (+10 empresas, +60 pessoas, 70% eficiência) -> Goal: Inform/Impact -> Viz/Presentation Method: Large, bold stats in HTML/Tailwind cards -> Interaction: None -> Justification: Provides immediate, high-impact evidence of achievements.
-        - Report Info: Full project list -> Goal: Organize/Explore -> Viz/Presentation Method: Interactive card grid (HTML/Tailwind) -> Interaction: JS filters by category -> Justification: Allows users to actively engage with the content and find relevant projects, showcasing a diverse skillset in a structured manner.
-        - Report Info: Efficiency gain (70%) in a project -> Goal: Compare/Inform -> Viz/Presentation Method: Bar chart (Chart.js/Canvas) -> Interaction: None (static chart) -> Justification: Visually reinforces the impressive metric, making it more memorable than text alone.
-        - Report Info: Skills and methodologies -> Goal: Organize -> Viz/Presentation Method: Styled tag cloud/grid (HTML/Tailwind) -> Interaction: None -> Justification: Presents a wide range of skills in a visually scannable and modern format.
-        - Update: "Sobre Mim" section completely refactored to focus on capabilities and results, rather than chronological job descriptions. New key areas like "Marketing Estratégico e Criação de Conteúdo" and "Educação e Capacitação" are introduced.
-        - Update: All dates removed from project cards and other relevant sections to maintain a timeless focus on capabilities.
-        - Update: Added "Qualidade" to "Formações Técnicas".
-        - Update: Removed "Business Intelligence com Power BI" certification.
-        - New: Added "Análise de Dados", "Criação de Conteúdo", "Empreendedorismo", "Consultoria Financeira", "Ensino/Docência", "Liderança de equipe", "Gestão de pessoas", "Marketing estratégico", "Marketing de mídias sociais", "Coordenação de projetos" to "Competências e Metodologias".
-        - Further Refinement: "Sobre Mim" section now focuses on capabilities and results, using a more dynamic layout with distinct paragraphs for each key area of expertise derived from the user's experience.
-        - Update: Removed "(cursando)" from "Engenharia de Produção" and "Gestão Estratégica Empresarial" in Formação Acadêmica.
-        - New: Added full name "Pedro Lucas Moraes" in header and hero section.
-        - New: Added information about "Negócios Águia" and being part of a team in the hero section.
-        - New: Integrated Negócios Águia logo in the hero section.
-        - New: Added a "Colaboradores" section with Larissa's profile, including her photo and description of her expertise in profile creation and engagement.
-        - New: Added "Colaboradores" link to the navigation bar.
-        - New: Implemented JavaScript to toggle visibility between Pedro's main content and Larissa's profile section.
-        - Update: Populated Larissa's profile with detailed information from the provided PDF, including her "Resumo", "Experiência", "Competências Chave", and "Formação e Certificações".
-        - Update: Removed "Lúmina" from Pedro's project card.
-        - New: Added a dedicated section for "Metodologia Negócios Águia de Marketing" in Larissa's profile, detailing its purpose, creation, and results, linking her role to its success. This now includes the specific numbers for followers and views from the PDF, presented with Chart.js bar charts for visual impact.
-        - Update: Removed all asterisks from the entire page.
-        - New: Added a dedicated section for "Sobre a Negócios Águia" with company description, services, vision, and social media links.
-        - Update: Changed copyright in footer to "Negócios Águia".
-        - Update: Updated navigation to include "Empresa".
-        - New: Added LinkedIn company link to "Conecte-se com a Negócios Águia" section.
-        - Reorder: Moved "Company About Section" to immediately after "Hero Section" for prominence.
-        - Update: Changed header title from "Pedro Lucas Moraes" to "Negócios Águia".
-        - Update: Added "Pedro Lucas Moraes" as a subtitle in the "Sobre Mim" section.
-        - Refinement: Adjusted JavaScript for navigation and profile switching to ensure smooth scrolling to the top of the target section.
-        - CRITICAL FIX: Separated Pedro's and Larissa's experiences in their respective "Sobre Mim" sections to ensure no mixing of information. Pedro's "Sobre Mim" now exclusively contains his experiences (Sicredi, Sicoob, Crea-Minas Jr, Professor, Consulting, Startup, Marketing, Financial Consulting for MEI).
-        - New: Re-integrated the "Lúmina" experience into Pedro's "Sobre Mim" under a new "Inovação e Desenvolvimento de Produtos" section, without mentioning "Lúmina" by name. The corresponding project card was removed.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
-        }
-        h1, h2, h3 {
-            font-family: 'Montserrat', sans-serif;
-        }
-        .nav-link {
-            transition: color 0.3s, border-bottom-color 0.3s;
-            border-bottom: 2px solid transparent;
-        }
-        .nav-link:hover, .nav-link.active {
-            color: #d97706; /* amber-600 */
-            border-bottom-color: #d97706; /* amber-600 */
-        }
-        .filter-btn {
-            transition: all 0.3s;
-        }
-        .filter-btn.active {
-            background-color: #0369a1; /* sky-700 */
-            color: white;
-        }
-        .project-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            will-change: transform;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 250px;
-            max-height: 300px;
-        }
-        .collaborator-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .collaborator-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-800">
-
-    <!-- Header & Navigation -->
-    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#home" class="text-xl font-bold text-slate-900">Negócios Águia</a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#company-about" class="nav-link text-slate-600 font-medium pb-1">Empresa</a>
-                <a href="#about" class="nav-link text-slate-600 font-medium pb-1">Sobre</a>
-                <a href="#projects" class="nav-link text-slate-600 font-medium pb-1">Projetos</a>
-                <a href="#skills" class="nav-link text-slate-600 font-medium pb-1">Competências</a>
-                <a href="#education" class="nav-link text-slate-600 font-medium pb-1">Formação</a>
-                <a href="#collaborators" class="nav-link text-slate-600 font-medium pb-1">Colaboradores</a>
-                <a href="#contact" class="bg-sky-700 text-white px-4 py-2 rounded-lg hover:bg-sky-800 transition-colors">Contato</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-slate-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white">
-            <a href="#company-about" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Empresa</a>
-            <a href="#about" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Sobre</a>
-            <a href="#projects" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Projetos</a>
-            <a href="#skills" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Competências</a>
-            <a href="#education" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Formação</a>
-            <a href="#collaborators" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Colaboradores</a>
-            <a href="#contact" class="block text-center py-2 px-4 text-white bg-sky-700 hover:bg-sky-800">Contato</a>
+<!-- Header & Navigation -->
+<header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="#home" class="text-xl font-bold text-slate-900">Negócios Águia</a>
+        <div class="hidden md:flex items-center space-x-8">
+            <a href="#collaborators-company-info" class="nav-link text-slate-600 font-medium pb-1">Empresa</a>
+            <a href="#about" class="nav-link text-slate-600 font-medium pb-1">Sobre</a>
+            <a href="#projects" class="nav-link text-slate-600 font-medium pb-1">Projetos</a>
+            <a href="#skills" class="nav-link text-slate-600 font-medium pb-1">Competências</a>
+            <a href="#education" class="nav-link text-slate-600 font-medium pb-1">Formação</a>
+            <a href="#collaborators" class="nav-link text-slate-600 font-medium pb-1">Colaboradores</a>
+            <a href="#contact" class="bg-sky-700 text-white px-4 py-2 rounded-lg hover:bg-sky-800 transition-colors">Contato</a>
         </div>
-    </header>
+        <button id="mobile-menu-button" class="md:hidden text-slate-900">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-white">
+        <a href="#collaborators-company-info" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Empresa</a>
+        <a href="#about" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Sobre</a>
+        <a href="#projects" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Projetos</a>
+        <a href="#skills" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Competências</a>
+        <a href="#education" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Formação</a>
+        <a href="#collaborators" class="block text-center py-2 px-4 text-slate-600 hover:bg-slate-100">Colaboradores</a>
+        <a href="#contact" class="block text-center py-2 px-4 text-white bg-sky-700 hover:bg-sky-800">Contato</a>
+    </div>
+</header>
 
-    <main id="pedro-main-content">
-        <!-- Hero Section -->
-        <section id="home" class="py-20 md:py-32 bg-white">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">Pedro Lucas Moraes</h1>
-                <p class="mt-4 text-lg md:text-xl text-sky-800 font-semibold">Especialista em Gestão Estratégica, Otimização de Processos e Desenvolvimento de Negócios</p>
-                <p class="mt-2 text-md md:text-lg text-slate-600">Atuando em nome da <strong>Negócios Águia</strong>, uma consultoria composta por um time de especialistas.</p>
-                <div class="mt-8">
-                    <a href="https://www.linkedin.com/in/pedrolucas127" target="_blank" class="bg-sky-700 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-800 transition-colors inline-flex items-center">
-                        Visitar LinkedIn &nbsp; <span>&#10132;</span>
-                    </a>
+<main id="pedro-main-content">
+    <!-- Pedro's Hero Content (formerly #home section) -->
+    <section id="pedro-hero-content" class="py-20 md:py-32 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">Pedro Lucas Moraes</h1>
+            <p class="mt-4 text-lg md:text-xl text-sky-800 font-semibold">Especialista em Gestão Estratégica, Otimização de Processos e Desenvolvimento de Negócios</p>
+            <p class="mt-2 text-md md:text-lg text-slate-600">Atuando em nome da <strong>Negócios Águia</strong>, uma consultoria composta por um time de especialistas.</p>
+            <div class="mt-8">
+                <a href="https://www.linkedin.com/in/pedrolucas127" target="_blank" class="bg-sky-700 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-800 transition-colors inline-flex items-center">
+                    Visitar LinkedIn   <span>➔</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About / Impact Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-slate-900">Sobre Mim: Capacidades e Resultados</h2>
+                <p class="mt-2 text-lg font-semibold text-slate-700">Pedro Lucas Moraes</p>
+                <p class="mt-4 max-w-3xl mx-auto text-slate-600">
+                    Com uma trajetória sólida em Engenharia de Produção e especializações em Gestão Estratégica e Comercial, atuo como um agente de transformação para empresas e indivíduos. Minha paixão é impulsionar o crescimento sustentável através de soluções eficazes.
+                </p>
+                <div class="mt-8 text-left max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Gestão Estratégica e Liderança</h3>
+                        <p class="text-slate-700">
+                            Lidero equipes e projetos complexos, com foco em planejamento estratégico e otimização de operações, incluindo atuação como Coordenador Geral no Crea-Minas Júnior. Minha consultoria empresarial visa alinhar procedimentos à liderança para acompanhamento eficaz via análise de dados.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Desenvolvimento de Negócios e Consultoria Financeira</h3>
+                        <p class="text-slate-700">
+                            Experiência em atendimento consultivo no Sicredi e Sicoob Credivale, identificando oportunidades e promovendo soluções financeiras. Ofereço consultoria financeira estratégica para empresários MEI, impulsionando seu crescimento comercial.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Otimização de Processos e Inovação</h3>
+                        <p class="text-slate-700">
+                            Expertise em estruturação e digitalização de processos para ganhos de eficiência (70%). Lidero projetos de inovação, incluindo a estruturação recente de uma startup e o desenvolvimento de MVPs.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Marketing Estratégico e Criação de Conteúdo</h3>
+                        <p class="text-slate-700">
+                            Responsável pelo marketing de empresas, incluindo criação de posts, reels e produção de conteúdo sob demanda. Realizo análise de métricas para otimizar campanhas e estratégias de comunicação.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Educação e Capacitação</h3>
+                        <p class="text-slate-700">
+                            Atuo como professor de informática e gestão de projetos. Ministro treinamentos, cursos e palestras em inovação, empreendedorismo, gestão e negócios, focando no desenvolvimento e engajamento de equipes.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Inovação e Desenvolvimento de Produtos</h3>
+                        <p class="text-slate-700">
+                            Atuação na liderança de operações e parcerias, com foco na criação de Canvas e desenvolvimento de pitchs. Experiência em mapeamento de processos, organização de cronogramas de vídeo e produção de MVPs, utilizando ferramentas como Shark, 5W2H e CapCut para impulsionar o desenvolvimento de novos produtos e serviços.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </section>
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-slate-50 p-8 rounded-xl shadow-md">
+                    <p class="text-5xl font-extrabold text-sky-700">10+</p>
+                    <p class="mt-2 text-lg font-semibold text-slate-700">Empresas Atendidas</p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-xl shadow-md">
+                    <p class="text-5xl font-extrabold text-sky-700">60+</p>
+                    <p class="mt-2 text-lg font-semibold text-slate-700">Pessoas Impactadas</p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-xl shadow-md">
+                    <p class="text-5xl font-extrabold text-sky-700">70%</p>
+                    <p class="mt-2 text-lg font-semibold text-slate-700">Ganho de Eficiência em Processos</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Company About Section -->
-        <section id="company-about" class="py-20">
-            <div class="container mx-auto px-6">
+    <!-- Projects Section -->
+    <section id="projects" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-slate-900">Projetos de Destaque</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">Explore os projetos que demonstram minha capacidade de gerar resultados através da estratégia, gestão e inovação. Use os filtros para navegar pelas diferentes áreas de atuação.</p>
+            </div>
+
+            <!-- Filters -->
+            <div id="project-filters" class="flex flex-wrap justify-center gap-4 mt-12 mb-12">
+                <button class="filter-btn active bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="all">Todos</button>
+                <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="gestao">Gestão e Processos</button>
+                <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="marketing">Marketing e Inovação</button>
+                <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="carreira">Desenvolvimento de Carreira</button>
+            </div>
+
+            <!-- Project Grid -->
+            <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
+                    <h3 class="text-xl font-bold text-slate-900">Estruturação Completa de Processos</h3>
+                    <p class="text-slate-600 flex-grow">Criação de um projeto do zero, com designação de tarefas, acompanhamento de cronogramas e gestão do conhecimento para garantir replicabilidade.</p>
+                    <div class="mt-4">
+                        <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Canvas</span>
+                        <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Miro</span>
+                    </div>
+                </article>
+
+                <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="marketing">
+                    <h3 class="text-xl font-bold text-slate-900">Consultoria em Marketing e Treinamentos</h3>
+                    <p class="text-slate-600 flex-grow">Ajuste e validação de modelos de negócio, revisão de processos, desenvolvimento de MVPs e pitchs para atração de parceiros estratégicos.</p>
+                    <div class="mt-4">
+                        <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">5W2H</span>
+                        <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Figma</span>
+                    </div>
+                </article>
+                
+                <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
+                    <h3 class="text-xl font-bold text-slate-900">Otimização para Empresa Financeira</h3>
+                    <p class="text-slate-600 flex-grow">Automação de processos manuais e implementação de gestão do conhecimento, resultando em 70% de ganho de eficiência.</p>
+                    <div class="mt-4">
+                        <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Digitalização</span>
+                    </div>
+                    <div class="mt-4 chart-container">
+                         <canvas id="efficiencyChart"></canvas>
+                    </div>
+                </article>
+
+                <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="carreira">
+                    <h3 class="text-xl font-bold text-slate-900">Desenvolvimento de Perfis no LinkedIn</h3>
+                    <p class="text-slate-600 flex-grow">Otimização de mais de 15 perfis, mentoria estratégica e preparação para entrevistas, impulsionando promoções e ascensão de carreira.</p>
+                     <div class="mt-4">
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mentoria</span>
+                    </div>
+                </article>
+
+                <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="marketing">
+                    <h3 class="text-xl font-bold text-slate-900">Consultoria para Empresa de Alimentos</h3>
+                    <p class="text-slate-600 flex-grow">Análise de perfil empresarial, desenvolvimento de cronograma estratégico e produção de conteúdo audiovisual para impulsionar presença digital.</p>
+                    <div class="mt-4">
+                         <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Marketing Digital</span>
+                    </div>
+                </article>
+
+                <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
+                    <h3 class="text-xl font-bold text-slate-900">Digitalização para Empresa de Costura</h3>
+                    <p class="text-slate-600 flex-grow">Mapeamento de processos, digitalização operacional e gestão da demanda para suportar o crescimento e aumento de pedidos.</p>
+                    <div class="mt-4">
+                        <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mapeamento de Processos</span>
+                    </div>
+                </article>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaborators Section -->
+    <section id="collaborators" class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold text-slate-900">Nossa Equipe na Negócios Águia</h2>
+            <p class="mt-4 max-w-2xl mx-auto text-slate-600">Conheça os especialistas que compõem o time da Negócios Águia, trazendo diversas expertises para impulsionar seus resultados.</p>
+            
+            <!-- Negócios Águia Company Info (Reusable Block - now inside Collaborators) -->
+            <div id="collaborators-company-info" class="mt-12 mb-16 p-8 bg-slate-50 rounded-xl shadow-lg">
                 <div class="text-center">
                     <img src="https://placehold.co/150x150/001B40/FFFFFF?text=NEG%C3%93CIOS+%C3%81GUIA" alt="Logo Negócios Águia" class="mx-auto mb-6 rounded-full shadow-lg">
-                    <h2 class="text-3xl font-bold text-slate-900">Negócios Águia: Gestão eficiente e marketing para negócios que buscam mais do que resultados</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-slate-600">
+                    <h3 class="text-2xl font-bold text-slate-900">Negócios Águia: Gestão eficiente e marketing para negócios que buscam mais do que resultados</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-slate-700">
                         Somos uma consultoria especializada em ajudar pequenos e médios negócios a estruturarem, otimizarem e escalarem suas operações. Oferecemos soluções práticas e estratégicas nas áreas de engenharia, gestão e marketing, com foco em resultados reais e crescimento sustentável. Nosso compromisso é proporcionar aos empreendedores a expertise necessária para maximizar o potencial de suas empresas, através de um trabalho baseado na ética, transparência e educação empreendedora acessível.
                     </p>
-                    <p class="mt-4 max-w-3xl mx-auto text-slate-600">
+                    <p class="mt-4 max-w-3xl mx-auto text-slate-700">
                         Com uma abordagem focada na melhoria contínua, utilizamos ferramentas inovadoras e personalizadas para promover a transformação de processos, a otimização de resultados e o fortalecimento de marcas no mercado. Nosso objetivo é ser referência nacional em consultoria, ajudando empresas a atingirem um desempenho excepcional com simplicidade e eficiência. Acreditamos que cada negócio é único, por isso criamos soluções sob medida, orientadas para o sucesso no longo prazo. Se você busca uma gestão estratégica que vai além dos resultados imediatos, estamos aqui para impulsionar sua jornada rumo à evolução e ao sucesso contínuo.
                     </p>
                 </div>
 
-                <div class="mt-12 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
                     <div class="bg-white p-6 rounded-lg shadow-md">
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Nossa Visão</h3>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">Nossa Visão</h4>
                         <p class="text-slate-700">
                             A Negócios Águia é uma empresa especializada em Gestão Empresarial e Marketing Estratégico, criada por engenheiros de produção com uma missão clara: transformar negócios em estruturas sólidas, organizadas e com presença de mercado marcante. Nosso símbolo é a águia porque acreditamos em visão de longo alcance, estratégia precisa e capacidade de voar alto, com foco e método.
                         </p>
                     </div>
                     <div class="bg-white p-6 rounded-lg shadow-md">
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Frentes de Atuação</h3>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">Frentes de Atuação</h4>
                         <ul class="list-disc list-inside text-slate-700 space-y-2">
                             <li><strong>Gestão e Consultoria Empresarial:</strong> Auxiliamos empreendedores e empresas a estruturar seus negócios com inteligência e clareza. Apoiamos desde o planejamento até a organização de processos, finanças, metas e indicadores, sempre com base nas melhores práticas de gestão moderna.</li>
                             <li><strong>Marketing e Gestão de Redes Sociais:</strong> Criamos estratégias de conteúdo, posicionamento de marca, identidade visual, campanhas e acompanhamento de resultados. Foco em resultados reais e conexão com o público certo por meio de uma metodologia própria de marketing testada e validada.</li>
                         </ul>
                     </div>
                     <div class="bg-white p-6 rounded-lg shadow-md md:col-span-2">
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Serviços Prestados</h3>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">Serviços Prestados</h4>
                         <div class="flex flex-wrap gap-2 text-slate-700">
                             <span class="bg-sky-100 text-sky-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Consultoria de negócios</span>
                             <span class="bg-sky-100 text-sky-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Consultoria de marketing</span>
@@ -184,697 +232,555 @@
                     </div>
                 </div>
 
-                <div class="mt-12 text-center">
-                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Conecte-se com a Negócios Águia</h3>
+                <div class="mt-8 text-center">
+                    <h4 class="text-2xl font-bold text-slate-900 mb-4">Conecte-se com a Negócios Águia</h4>
                     <div class="flex justify-center space-x-6">
                         <a href="https://www.instagram.com/negociosaguia_/" target="_blank" class="text-sky-700 hover:text-sky-800 text-4xl">
                             <!-- Instagram Icon (Placeholder) -->
-                            &#x1F4F7;
+                            
                         </a>
                         <a href="https://www.facebook.com/profile.php?id=61576737359116" target="_blank" class="text-sky-700 hover:text-sky-800 text-4xl">
                             <!-- Facebook Icon (Placeholder) -->
-                            &#x1F4F0;
+                            
                         </a>
                         <a href="https://www.linkedin.com/company/neg%C3%B3cios-%C3%A1guia/?lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_all%3BPH4DOjMlTDyN8eS0meQlng%3D%3D" target="_blank" class="text-sky-700 hover:text-sky-800 text-4xl">
                             <!-- LinkedIn Icon (Placeholder) -->
-                            &#x1F517;
+                            
                         </a>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- About / Impact Section -->
-        <section id="about" class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold text-slate-900">Sobre Mim: Capacidades e Resultados</h2>
-                    <p class="mt-2 text-lg font-semibold text-slate-700">Pedro Lucas Moraes</p>
-                    <p class="mt-4 max-w-3xl mx-auto text-slate-600">
-                        Com uma trajetória sólida em Engenharia de Produção e especializações em Gestão Estratégica e Comercial, atuo como um agente de transformação para empresas e indivíduos. Minha paixão é impulsionar o crescimento sustentável através de soluções eficazes.
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Pedro's card (optional, can be linked or implied he's part of it) -->
+                <div class="collaborator-card bg-slate-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                    <img src="https://placehold.co/120x120/001B40/FFFFFF?text=Pedro+Moraes" alt="Foto de Pedro Lucas Moraes" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-sky-700">
+                    <h3 class="text-xl font-bold text-slate-900">Pedro Lucas Moraes</h3>
+                    <p class="text-sky-700 font-semibold mb-3">Especialista em Gestão Estratégica e Otimização</p>
+                    <p class="text-slate-600">
+                        Pedro é o especialista em gestão estratégica, otimização de processos e desenvolvimento de negócios. Sua paixão é impulsionar o crescimento sustentável através de soluções eficazes e liderança de projetos complexos.
                     </p>
-                    <div class="mt-8 text-left max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Gestão Estratégica e Liderança</h3>
-                            <p class="text-slate-700">
-                                Lidero equipes e projetos complexos, com foco em planejamento estratégico e otimização de operações, incluindo atuação como Coordenador Geral no Crea-Minas Júnior. Minha consultoria empresarial visa alinhar procedimentos à liderança para acompanhamento eficaz via análise de dados.
-                            </p>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Desenvolvimento de Negócios e Consultoria Financeira</h3>
-                            <p class="text-slate-700">
-                                Experiência em atendimento consultivo no Sicredi e Sicoob Credivale, identificando oportunidades e promovendo soluções financeiras. Ofereço consultoria financeira estratégica para empresários MEI, impulsionando seu crescimento comercial.
-                            </p>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Otimização de Processos e Inovação</h3>
-                            <p class="text-slate-700">
-                                Expertise em estruturação e digitalização de processos para ganhos de eficiência (70%). Lidero projetos de inovação, incluindo a estruturação recente de uma startup e o desenvolvimento de MVPs.
-                            </p>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Marketing Estratégico e Criação de Conteúdo</h3>
-                            <p class="text-slate-700">
-                                Responsável pelo marketing de empresas, incluindo criação de posts, reels e produção de conteúdo sob demanda. Realizo análise de métricas para otimizar campanhas e estratégias de comunicação.
-                            </p>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Educação e Capacitação</h3>
-                            <p class="text-slate-700">
-                                Atuo como professor de informática e gestão de projetos. Ministro treinamentos, cursos e palestras em inovação, empreendedorismo, gestão e negócios, focando no desenvolvimento e engajamento de equipes.
-                            </p>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Inovação e Desenvolvimento de Produtos</h3>
-                            <p class="text-slate-700">
-                                Atuação na liderança de operações e parcerias, com foco na criação de Canvas e desenvolvimento de pitchs. Experiência em mapeamento de processos, organização de cronogramas de vídeo e produção de MVPs, utilizando ferramentas como Shark, 5W2H e CapCut para impulsionar o desenvolvimento de novos produtos e serviços.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                    <div class="bg-slate-50 p-8 rounded-xl shadow-md">
-                        <p class="text-5xl font-extrabold text-sky-700">10+</p>
-                        <p class="mt-2 text-lg font-semibold text-slate-700">Empresas Atendidas</p>
-                    </div>
-                    <div class="bg-slate-50 p-8 rounded-xl shadow-md">
-                        <p class="text-5xl font-extrabold text-sky-700">60+</p>
-                        <p class="mt-2 text-lg font-semibold text-slate-700">Pessoas Impactadas</p>
-                    </div>
-                    <div class="bg-slate-50 p-8 rounded-xl shadow-md">
-                        <p class="text-5xl font-extrabold text-sky-700">70%</p>
-                        <p class="mt-2 text-lg font-semibold text-slate-700">Ganho de Eficiência em Processos</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold text-slate-900">Projetos de Destaque</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Explore os projetos que demonstram minha capacidade de gerar resultados através da estratégia, gestão e inovação. Use os filtros para navegar pelas diferentes áreas de atuação.</p>
+                    <button class="mt-4 bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition-colors" onclick="showPedroProfileAndScroll()">Ver Perfil Completo</button>
                 </div>
 
-                <!-- Filters -->
-                <div id="project-filters" class="flex flex-wrap justify-center gap-4 mt-12 mb-12">
-                    <button class="filter-btn active bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="all">Todos</button>
-                    <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="gestao">Gestão e Processos</button>
-                    <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="marketing">Marketing e Inovação</button>
-                    <button class="filter-btn bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-full" data-filter="carreira">Desenvolvimento de Carreira</button>
-                </div>
-
-                <!-- Project Grid -->
-                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    
-                    <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
-                        <h3 class="text-xl font-bold text-slate-900">Estruturação Completa de Processos</h3>
-                        <p class="text-slate-600 flex-grow">Criação de um projeto do zero, com designação de tarefas, acompanhamento de cronogramas e gestão do conhecimento para garantir replicabilidade.</p>
-                        <div class="mt-4">
-                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Canvas</span>
-                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Miro</span>
-                        </div>
-                    </article>
-
-                    <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="marketing">
-                        <h3 class="text-xl font-bold text-slate-900">Consultoria em Marketing e Treinamentos</h3>
-                        <p class="text-slate-600 flex-grow">Ajuste e validação de modelos de negócio, revisão de processos, desenvolvimento de MVPs e pitchs para atração de parceiros estratégicos.</p>
-                        <div class="mt-4">
-                            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">5W2H</span>
-                            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Figma</span>
-                        </div>
-                    </article>
-                    
-                    <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
-                        <h3 class="text-xl font-bold text-slate-900">Otimização para Empresa Financeira</h3>
-                        <p class="text-slate-600 flex-grow">Automação de processos manuais e implementação de gestão do conhecimento, resultando em 70% de ganho de eficiência.</p>
-                        <div class="mt-4">
-                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Digitalização</span>
-                        </div>
-                        <div class="mt-4 chart-container">
-                             <canvas id="efficiencyChart"></canvas>
-                        </div>
-                    </article>
-
-                    <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="carreira">
-                        <h3 class="text-xl font-bold text-slate-900">Desenvolvimento de Perfis no LinkedIn</h3>
-                        <p class="text-slate-600 flex-grow">Otimização de mais de 15 perfis, mentoria estratégica e preparação para entrevistas, impulsionando promoções e ascensão de carreira.</p>
-                         <div class="mt-4">
-                            <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mentoria</span>
-                        </div>
-                    </article>
-
-                    <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="marketing">
-                        <h3 class="text-xl font-bold text-slate-900">Consultoria para Empresa de Alimentos</h3>
-                        <p class="text-slate-600 flex-grow">Análise de perfil empresarial, desenvolvimento de cronograma estratégico e produção de conteúdo audiovisual para impulsionar presença digital.</p>
-                        <div class="mt-4">
-                             <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Marketing Digital</span>
-                        </div>
-                    </article>
-
-                    <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
-                        <h3 class="text-xl font-bold text-slate-900">Digitalização para Empresa de Costura</h3>
-                        <p class="text-slate-600 flex-grow">Mapeamento de processos, digitalização operacional e gestão da demanda para suportar o crescimento e aumento de pedidos.</p>
-                        <div class="mt-4">
-                            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Mapeamento de Processos</span>
-                        </div>
-                    </article>
-                    
-                </div>
-            </div>
-        </section>
-
-        <!-- Collaborators Section -->
-        <section id="collaborators" class="py-20 bg-white">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold text-slate-900">Nossa Equipe na Negócios Águia</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-slate-600">Conheça os especialistas que compõem o time da Negócios Águia, trazendo diversas expertises para impulsionar seus resultados.</p>
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Pedro's card (optional, can be linked or implied he's part of it) -->
-                    <div class="collaborator-card bg-slate-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
-                        <img src="https://placehold.co/120x120/001B40/FFFFFF?text=Pedro+Moraes" alt="Foto de Pedro Lucas Moraes" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-sky-700">
-                        <h3 class="text-xl font-bold text-slate-900">Pedro Lucas Moraes</h3>
-                        <p class="text-sky-700 font-semibold mb-3">Especialista em Gestão Estratégica e Otimização</p>
-                        <p class="text-slate-600">
-                            Pedro é o especialista em gestão estratégica, otimização de processos e desenvolvimento de negócios. Sua paixão é impulsionar o crescimento sustentável através de soluções eficazes e liderança de projetos complexos.
-                        </p>
-                        <button class="mt-4 bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition-colors" onclick="showPedroProfileAndScroll()">Ver Perfil Completo</button>
-                    </div>
-
-                    <div class="collaborator-card bg-slate-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
-                        <img src="https://placehold.co/120x120/001B40/FFFFFF?text=Larissa+Lima" alt="Foto de Larissa Lima" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-sky-700">
-                        <h3 class="text-xl font-bold text-slate-900">Larissa Lima</h3>
-                        <p class="text-sky-700 font-semibold mb-3">Especialista em Criação de Perfis e Engajamento</p>
-                        <p class="text-slate-600">
-                            Larissa é responsável por desenvolver e otimizar perfis profissionais, com foco em estratégias de engajamento e reestruturação para impulsionamento de carreira. Sua expertise garante que a presença digital de nossos clientes seja impactante e eficaz.
-                        </p>
-                        <button class="mt-4 bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition-colors" onclick="showLarissaProfileAndScroll()">Ver Perfil Completo</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills & Methodologies Section -->
-        <section id="skills" class="py-20">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold text-slate-900">Competências e Metodologias</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-slate-600">Um conjunto de ferramentas e metodologias aplicadas para entregar soluções eficazes e inovadoras.</p>
-                <div class="mt-12 max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-4">
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Canvas</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão do Conhecimento</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">5W2H</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Shark & Miro</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Figma</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing Digital</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Mapeamento de Processos</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">MVP</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Pitch Deck</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Mentoria Estratégica</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Liderança de Equipes</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Produção de Materiais Instrucionais</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Ministrar Treinamentos e Palestras</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Análise de Dados</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Criação de Conteúdo</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Empreendedorismo</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Consultoria Financeira</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Ensino/Docência</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão de Pessoas</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Coordenação de Projetos</span>
-                    <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing de Mídias Sociais</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Education & Certifications Section -->
-        <section id="education" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl font-bold text-slate-900">Formação e Certificações</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Compromisso contínuo com a excelência e o aprendizado, validado por certificações de mercado e formação acadêmica robusta.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-5xl mx-auto">
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Certificações</h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">&#10004;</span><span><span class="font-semibold">CPA-10, CPA-20, CEA</span> (Anbima)</span></li>
-                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">&#10004;</span><span><span class="font-semibold">Febraban FBB100</span></span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Formação Acadêmica</h3>
-                        <ul class="space-y-3">
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">MBA em Gestão Corporativa Estratégica</span></span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">MBA em Gestão Comercial</span></span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Pós-graduação em Especialização Pedagógica Docente</span></span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Tecnologia em Processos Gerenciais</span></span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Engenharia de Produção</span></span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Gestão Estratégica Empresarial</span></span></li>
-                        </ul>
-                    </div>
-                     <div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Pesquisa e Publicações</h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">&#10004;</span><span>2 Artigos Aprovados: <span class="font-semibold">COMBENG</span> e <span class="font-semibold">I Simpósio Nacional de Engenharia</span></span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Formações Técnicas</h3>
-                         <ul class="space-y-3">
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Administração</span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Meio Ambiente</span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Marketing</span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Segurança do Trabalho</span></li>
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span>Qualidade</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Larissa's Profile Section (hidden by default) -->
-    <section id="larissa-profile-content" class="hidden py-20 bg-white">
-        <div class="container mx-auto px-6 text-center">
-            <button class="mb-8 bg-slate-200 text-slate-800 px-6 py-2 rounded-lg hover:bg-slate-300 transition-colors" onclick="showPedroProfileAndScroll()">&#8592; Voltar ao Portfólio Principal</button>
-            
-            <img src="https://www.linkedin.com/in/larissa-lima-nogueira-44a517365/overlay/photo/" onerror="this.onerror=null; this.src='https://placehold.co/150x150/001B40/FFFFFF?text=Larissa+Lima';" alt="Foto de Larissa Lima" class="mx-auto mb-6 rounded-full shadow-lg border-4 border-sky-700">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">Larissa Lima Nogueira</h1>
-            <p class="mt-4 text-lg md:text-xl text-sky-800 font-semibold">Engenharia de Produção | Gestão | Marketing | Projetos | Inovação</p>
-            <p class="mt-2 text-md md:text-lg text-slate-600">Atuando em nome da <strong>Negócios Águia</strong>, como parte do time de especialistas.</p>
-            <div class="mt-8">
-                <a href="https://www.linkedin.com/in/larissa-lima-nogueira-44a517365" target="_blank" class="bg-sky-700 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-800 transition-colors inline-flex items-center">
-                    Visitar LinkedIn &nbsp; <span>&#10132;</span>
-                </a>
-            </div>
-
-            <div class="mt-12 text-left max-w-4xl mx-auto space-y-6">
-                <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Resumo Profissional</h3>
-                    <p class="text-slate-700">
-                        Estudante de Engenharia de Produção apaixonada por gestão e inovação. Possui experiência prática em gestão de projetos, onde participou da elaboração e execução de iniciativas sociais, quanto como instrutora de curso de Gestão de Projetos, contribuindo para a formação de novos talentos. Atualmente, é Assessora de Marketing no CAEP (Centro Acadêmico de Engenharia de Produção), desenvolvendo habilidades em comunicação estratégica, branding institucional e gestão de mídias sociais. Busca integrar conhecimento técnico com propósito, trabalhando em equipes multidisciplinares e contribuindo para projetos com impacto real.
+                <div class="collaborator-card bg-slate-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+                    <img src="https://placehold.co/120x120/001B40/FFFFFF?text=Larissa+Lima" alt="Foto de Larissa Lima" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-sky-700">
+                    <h3 class="text-xl font-bold text-slate-900">Larissa Lima</h3>
+                    <p class="text-sky-700 font-semibold mb-3">Especialista em Criação de Perfis e Engajamento</p>
+                    <p class="text-slate-600">
+                        Larissa é responsável por desenvolver e otimizar perfis profissionais, com foco em estratégias de engajamento e reestruturação para impulsionamento de carreira. Sua expertise garante que a presença digital de nossos clientes seja impactante e eficaz.
                     </p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Marketing e Comunicação Estratégica</h3>
-                    <p class="text-slate-700">
-                        Planejamento e execução de campanhas de comunicação para eventos acadêmicos, culturais e técnicos. Criação de conteúdos visuais e textos para redes sociais (Instagram, LinkedIn) com foco em engajamento e divulgação. Colaboração com outras áreas para ações integradas de marketing e análise de métricas para melhoria contínua. Apoio no desenvolvimento da identidade visual de projetos e eventos internos. Criação de artes visuais para divulgação de eventos e informativos institucionais.
-                    </p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Gestão de Pessoas e Desenvolvimento de Equipes</h3>
-                    <p class="text-slate-700">
-                        Atuação como Gerente de Pessoas na Lots Aerodesign, motivando e valorizando membros da equipe; identificando habilidades individuais e promovendo o desenvolvimento; oferecendo feedbacks e capacitações; coletando opiniões sobre o funcionamento da equipe; e sendo responsável por advertências, quando necessário.
-                    </p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Gestão de Projetos e Conhecimento</h3>
-                    <p class="text-slate-700">
-                        Experiência como Gerente de Projetos na Universidade Federal de Itajubá no "Programa CITInova Itabira - Projeto Inova Território", incluindo preparação de material de apoio aos cursos/oficinas de Gestão de Projetos, tutoria dos alunos, auxílio na gerência de projetos, designação de tarefas, acompanhamento de progressos e cronogramas, elaboração de relatórios e diários de bordo, apoio às atividades de rotina e atuação na gestão do conhecimento.
-                    </p>
-                </div>
-                <div class="bg-slate-50 p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Metodologia Negócios Águia de Marketing</h3>
-                    <p class="text-slate-700">
-                        Co-desenvolvedora da Metodologia Negócios Águia de Marketing, um passo a passo prático para crescimento orgânico no Instagram com estratégia, consistência e inteligência de conteúdo, validado em perfis de nicho.
-                    </p>
-                    <div class="mt-4 chart-container">
-                        <canvas id="larissaFollowersChart"></canvas>
-                    </div>
-                    <div class="mt-8 chart-container">
-                        <canvas id="larissaViewsChart"></canvas>
-                    </div>
-                    <p class="text-slate-700 mt-4">
-                        Tudo foi validado com perfis reais, criados do zero, sem impulsionamento pago. Crescimento 100% orgânico com técnica.
-                    </p>
+                    <button class="mt-4 bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition-colors" onclick="showLarissaProfileAndScroll()">Ver Perfil Completo</button>
                 </div>
             </div>
-
-            <div class="mt-12">
-                <h3 class="text-2xl font-bold text-slate-900 mb-4">Competências Chave</h3>
-                <div class="flex flex-wrap justify-center items-center gap-4">
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Oratória</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Liderança de Equipe</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão de Pessoas</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing Estratégico</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing de Mídias Sociais</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão de Projetos</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Coordenação de Projetos</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Comunicação Estratégica</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Análise de Métricas</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Desenvolvimento de Identidade Visual</span>
-                    <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Criação de Conteúdo</span>
-                </div>
-            </div>
-
-            <!-- Larissa's Education & Certifications Section -->
-            <div class="mt-12">
-                <h3 class="text-2xl font-bold text-slate-900 mb-4">Formação e Certificações</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-5xl mx-auto">
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-4">Certificações</h3>
-                        <ul class="space-y-3 text-left">
-                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">&#10004;</span><span><span class="font-semibold">Power BI</span></span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-4">Formação Acadêmica</h3>
-                        <ul class="space-y-3 text-left">
-                             <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">&#9733;</span><span><span class="font-semibold">Bacharelado em Engenharia de Produção</span> (Universidade Federal de Itajubá)</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <button class="mt-12 bg-slate-200 text-slate-800 px-6 py-2 rounded-lg hover:bg-slate-300 transition-colors" onclick="showPedroProfileAndScroll()">&#8592; Voltar ao Portfólio Principal</button>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-slate-800 text-white py-16">
+    <!-- Skills & Methodologies Section -->
+    <section id="skills" class="py-20">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold">Vamos Conversar?</h2>
-            <p class="mt-4 max-w-xl mx-auto text-slate-300">Estou pronto para colaborar com sua empresa e gerar resultados significativos. Entre em contato para discutirmos como podemos trabalhar juntos.</p>
-            <p class="mt-2 text-md text-slate-400">Atuando em nome da <strong>Negócios Águia</strong>, uma consultoria composta por um time de especialistas.</p>
-            <div class="mt-8">
-                <a href="https://www.linkedin.com/in/pedrolucas127" target="_blank" class="bg-sky-600 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-700 transition-colors">
-                    Enviar Mensagem no LinkedIn
-                </a>
-            </div>
-             <div class="mt-12 border-t border-slate-700 pt-8 text-slate-400 text-sm">
-                <p>&copy; 2025 Negócios Águia. Todos os direitos reservados.</p>
+            <h2 class="text-3xl font-bold text-slate-900">Competências e Metodologias</h2>
+            <p class="mt-4 max-w-2xl mx-auto text-slate-600">Um conjunto de ferramentas e metodologias aplicadas para entregar soluções eficazes e inovadoras.</p>
+            <div class="mt-12 max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-4">
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Canvas</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão do Conhecimento</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">5W2H</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Shark & Miro</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Figma</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing Digital</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Mapeamento de Processos</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">MVP</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Pitch Deck</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Mentoria Estratégica</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Liderança de Equipes</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Produção de Materiais Instrucionais</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Ministrar Treinamentos e Palestras</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Análise de Dados</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Criação de Conteúdo</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Empreendedorismo</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Consultoria Financeira</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Ensino/Docência</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão de Pessoas</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Coordenação de Projetos</span>
+                <span class="bg-white text-slate-700 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing de Mídias Sociais</span>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <script>
-        // Mobile Menu Toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+    <!-- Education & Certifications Section -->
+    <section id="education" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900">Formação e Certificações</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-slate-600">Compromisso contínuo com a excelência e o aprendizado, validado por certificações de mercado e formação acadêmica robusta.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-5xl mx-auto">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Certificações</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">✔</span><span><span class="font-semibold">CPA-10, CPA-20, CEA</span> (Anbima)</span></li>
+                        <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">✔</span><span><span class="font-semibold">Febraban FBB100</span></span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Formação Acadêmica</h3>
+                    <ul class="space-y-3">
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span><span class="font-semibold">MBA em Gestão Corporativa Estratégica</span></span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span><span class="font-semibold">MBA em Gestão Comercial</span></span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span><span class="font-semibold">Pós-graduação em Especialização Pedagógica Docente</span></span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span><span class="font-semibold">Tecnologia em Processos Gerenciais</span></span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span><span class="font-semibold">Engenharia de Produção</span></span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span><span class="font-semibold">Gestão Estratégica Empresarial</span></span></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Pesquisa e Publicações</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">✔</span><span>2 Artigos Aprovados: <span class="font-semibold">COMBENG</span> e <span class="font-semibold">I Simpósio Nacional de Engenharia</span></span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Formações Técnicas</h3>
+                     <ul class="space-y-3">
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span>Administração</span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span>Meio Ambiente</span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span>Marketing</span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span>Segurança do Trabalho</span></li>
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span>Qualidade</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Larissa's Profile Section (hidden by default) -->
+<section id="larissa-profile-content" class="hidden py-20 bg-white">
+    <div class="container mx-auto px-6 text-center">
+        <button class="mb-8 bg-slate-200 text-slate-800 px-6 py-2 rounded-lg hover:bg-slate-300 transition-colors" onclick="showPedroProfileAndScroll()">← Voltar ao Portfólio Principal</button>
+        
+        <img src="https://www.linkedin.com/in/larissa-lima-nogueira-44a517365/overlay/photo/" onerror="this.onerror=null; this.src='https://placehold.co/150x150/001B40/FFFFFF?text=Larissa+Lima';" alt="Foto de Larissa Lima" class="mx-auto mb-6 rounded-full shadow-lg border-4 border-sky-700">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">Larissa Lima Nogueira</h1>
+        <p class="mt-4 text-lg md:text-xl text-sky-800 font-semibold">Engenharia de Produção | Gestão | Marketing | Projetos | Inovação</p>
+        <p class="mt-2 text-md md:text-lg text-slate-600">Atuando em nome da <strong>Negócios Águia</strong>, como parte do time de especialistas.</p>
+        <div class="mt-8">
+            <a href="https://www.linkedin.com/in/larissa-lima-nogueira-44a517365" target="_blank" class="bg-sky-700 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-800 transition-colors inline-flex items-center">
+                Visitar LinkedIn   <span>➔</span>
+            </a>
+        </div>
+
+        <div class="mt-12 text-left max-w-4xl mx-auto space-y-6">
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Resumo Profissional</h3>
+                <p class="text-slate-700">
+                    Estudante de Engenharia de Produção apaixonada por gestão e inovação. Possui experiência prática em gestão de projetos, onde participou da elaboração e execução de iniciativas sociais, quanto como instrutora de curso de Gestão de Projetos, contribuindo para a formação de novos talentos. Atualmente, é Assessora de Marketing no CAEP (Centro Acadêmico de Engenharia de Produção), desenvolvendo habilidades em comunicação estratégica, branding institucional e gestão de mídias sociais. Busca integrar conhecimento técnico com propósito, trabalhando em equipes multidisciplinares e contribuindo para projetos com impacto real.
+                </p>
+            </div>
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Marketing e Comunicação Estratégica</h3>
+                <p class="text-slate-700">
+                    Planejamento e execução de campanhas de comunicação para eventos acadêmicos, culturais e técnicos. Criação de conteúdos visuais e textos para redes sociais (Instagram, LinkedIn) com foco em engajamento e divulgação. Colaboração com outras áreas para ações integradas de marketing e análise de métricas para melhoria contínua. Apoio no desenvolvimento da identidade visual de projetos e eventos internos. Criação de artes visuais para divulgação de eventos e informativos institucionais.
+                </p>
+            </div>
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Gestão de Pessoas e Desenvolvimento de Equipes</h3>
+                <p class="text-slate-700">
+                    Atuação como Gerente de Pessoas na Lots Aerodesign, motivando e valorizando membros da equipe; identificando habilidades individuais e promovendo o desenvolvimento; oferecendo feedbacks e capacitações; coletando opiniões sobre o funcionamento da equipe; e sendo responsável por advertências, quando necessário.
+                </p>
+            </div>
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Gestão de Projetos e Conhecimento</h3>
+                <p class="text-slate-700">
+                    Experiência como Gerente de Projetos na Universidade Federal de Itajubá no "Programa CITInova Itabira - Projeto Inova Território", incluindo preparação de material de apoio aos cursos/oficinas de Gestão de Projetos, tutoria dos alunos, auxílio na gerência de projetos, designação de tarefas, acompanhamento de progressos e cronogramas, elaboração de relatórios e diários de bordo, apoio às atividades de rotina e atuação na gestão do conhecimento.
+                </p>
+            </div>
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Metodologia Negócios Águia de Marketing</h3>
+                <p class="text-slate-700">
+                    Co-desenvolvedora da Metodologia Negócios Águia de Marketing, um passo a passo prático para crescimento orgânico no Instagram com estratégia, consistência e inteligência de conteúdo, validado em perfis de nicho.
+                </p>
+                <div class="mt-4 chart-container">
+                    <canvas id="larissaFollowersChart"></canvas>
+                </div>
+                <div class="mt-8 chart-container">
+                    <canvas id="larissaViewsChart"></canvas>
+                </div>
+                <p class="text-slate-700 mt-4">
+                    Tudo foi validado com perfis reais, criados do zero, sem impulsionamento pago. Crescimento 100% orgânico com técnica.
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-12">
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Competências Chave</h3>
+            <div class="flex flex-wrap justify-center items-center gap-4">
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Oratória</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Liderança de Equipe</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão de Pessoas</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing Estratégico</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Marketing de Mídias Sociais</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Gestão de Projetos</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Coordenação de Projetos</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Comunicação Estratégica</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Análise de Métricas</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Desenvolvimento de Identidade Visual</span>
+                <span class="bg-sky-100 text-sky-800 font-medium py-2 px-4 rounded-lg shadow-sm">Criação de Conteúdo</span>
+            </div>
+        </div>
+
+        <!-- Larissa's Education & Certifications Section -->
+        <div class="mt-12">
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Formação e Certificações</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 max-w-5xl mx-auto">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Certificações</h3>
+                    <ul class="space-y-3 text-left">
+                        <li class="flex items-start"><span class="text-amber-600 font-bold mr-3">✔</span><span><span class="font-semibold">Power BI</span></span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Formação Acadêmica</h3>
+                    <ul class="space-y-3 text-left">
+                         <li class="flex items-start"><span class="text-sky-700 font-bold mr-3">★</span><span><span class="font-semibold">Bacharelado em Engenharia de Produção</span> (Universidade Federal de Itajubá)</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <button class="mt-12 bg-slate-200 text-slate-800 px-6 py-2 rounded-lg hover:bg-slate-300 transition-colors" onclick="showPedroProfileAndScroll()">← Voltar ao Portfólio Principal</button>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact" class="bg-slate-800 text-white py-16">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold">Vamos Conversar?</h2>
+        <p class="mt-4 max-w-xl mx-auto text-slate-300">Estou pronto para colaborar com sua empresa e gerar resultados significativos. Entre em contato para discutirmos como podemos trabalhar juntos.</p>
+        <p class="mt-2 text-md text-slate-400">Atuando em nome da <strong>Negócios Águia</strong>, uma consultoria composta por um time de especialistas.</p>
+        <div class="mt-8">
+            <a href="https://www.linkedin.com/in/pedrolucas127" target="_blank" class="bg-sky-600 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-sky-700 transition-colors">
+                Enviar Mensagem no LinkedIn
+            </a>
+        </div>
+         <div class="mt-12 border-t border-slate-700 pt-8 text-slate-400 text-sm">
+            <p>© 2025 Negócios Águia. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Project Filtering Logic
+    const filterContainer = document.getElementById('project-filters');
+    const projectGrid = document.getElementById('project-grid');
+    const projectCards = projectGrid.querySelectorAll('.project-card');
+    const filterButtons = filterContainer.querySelectorAll('.filter-btn');
+
+    filterContainer.addEventListener('click', (event) => {
+        if (event.target.tagName !== 'BUTTON') return;
+
+        const filterValue = event.target.getAttribute('data-filter');
+
+        // Update active button state
+        filterButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.classList.remove('bg-sky-700');
+            btn.classList.remove('text-white');
         });
+        event.target.classList.add('active');
+        event.target.classList.add('bg-sky-700');
+        event.target.classList.add('text-white');
 
-        // Project Filtering Logic
-        const filterContainer = document.getElementById('project-filters');
-        const projectGrid = document.getElementById('project-grid');
-        const projectCards = projectGrid.querySelectorAll('.project-card');
-        const filterButtons = filterContainer.querySelectorAll('.filter-btn');
+        // Filter project cards
+        projectCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            if (filterValue === 'all' || cardCategory === filterValue) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
 
-        filterContainer.addEventListener('click', (event) => {
-            if (event.target.tagName !== 'BUTTON') return;
-
-            const filterValue = event.target.getAttribute('data-filter');
-
-            // Update active button state
-            filterButtons.forEach(btn => {
-                btn.classList.remove('active');
-                btn.classList.remove('bg-sky-700');
-                btn.classList.remove('text-white');
-            });
-            event.target.classList.add('active');
-            event.target.classList.add('bg-sky-700');
-            event.target.classList.add('text-white');
-
-            // Filter project cards
-            projectCards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                if (filterValue === 'all' || cardCategory === filterValue) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
+    // Efficiency Chart (Pedro's profile)
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctxEfficiency = document.getElementById('efficiencyChart')?.getContext('2d');
+        if (ctxEfficiency) {
+            new Chart(ctxEfficiency, {
+                type: 'bar',
+                data: {
+                    labels: ['Processo Manual', 'Processo Automatizado'],
+                    datasets: [{
+                        label: 'Tempo Gasto (horas)',
+                        data: [100, 30], // Represents a 70% reduction
+                        backgroundColor: [
+                            'rgba(251, 146, 60, 0.6)', // amber-400
+                            'rgba(3, 105, 161, 0.6)' // sky-700
+                        ],
+                        borderColor: [
+                            'rgba(251, 146, 60, 1)',
+                            'rgba(3, 105, 161, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Ganho de Eficiência',
+                            color: '#334155' // slate-700
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += `${100 - context.parsed.y}% de tempo economizado no processo automatizado.`;
+                                    }
+                                    return context.label === 'Processo Automatizado' ? 'Redução de 70% no tempo' : 'Tempo base do processo manual';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#475569' // slate-600
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#475569' // slate-600
+                            }
+                        }
+                    }
                 }
             });
-        });
+        }
 
-        // Efficiency Chart (Pedro's profile)
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctxEfficiency = document.getElementById('efficiencyChart')?.getContext('2d');
-            if (ctxEfficiency) {
-                new Chart(ctxEfficiency, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Processo Manual', 'Processo Automatizado'],
-                        datasets: [{
-                            label: 'Tempo Gasto (horas)',
-                            data: [100, 30], // Represents a 70% reduction
-                            backgroundColor: [
-                                'rgba(251, 146, 60, 0.6)', // amber-400
-                                'rgba(3, 105, 161, 0.6)' // sky-700
-                            ],
-                            borderColor: [
-                                'rgba(251, 146, 60, 1)',
-                                'rgba(3, 105, 161, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Ganho de Eficiência',
-                                color: '#334155' // slate-700
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += `${100 - context.parsed.y}% de tempo economizado no processo automatizado.`;
-                                        }
-                                        return context.label === 'Processo Automatizado' ? 'Redução de 70% no tempo' : 'Tempo base do processo manual';
-                                    }
-                                }
-                            }
+        // Larissa's Followers Chart
+        const ctxLarissaFollowers = document.getElementById('larissaFollowersChart')?.getContext('2d');
+        if (ctxLarissaFollowers) {
+            new Chart(ctxLarissaFollowers, {
+                type: 'bar',
+                data: {
+                    labels: ['Primeiro Perfil (2022)', 'Segundo Perfil (2023)'],
+                    datasets: [{
+                        label: 'Seguidores',
+                        data: [270000, 90000],
+                        backgroundColor: [
+                            'rgba(3, 105, 161, 0.6)', // sky-700
+                            'rgba(251, 146, 60, 0.6)' // amber-400
+                        ],
+                        borderColor: [
+                            'rgba(3, 105, 161, 1)',
+                            'rgba(251, 146, 60, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    color: '#475569' // slate-600
-                                }
-                            },
-                            x: {
-                                ticks: {
-                                    color: '#475569' // slate-600
+                        title: {
+                            display: true,
+                            text: 'Crescimento de Seguidores no Instagram',
+                            color: '#334155'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('pt-BR').format(context.parsed.y) + ' seguidores';
+                                    }
+                                    return label;
                                 }
                             }
                         }
-                    }
-                });
-            }
-
-            // Larissa's Followers Chart
-            const ctxLarissaFollowers = document.getElementById('larissaFollowersChart')?.getContext('2d');
-            if (ctxLarissaFollowers) {
-                new Chart(ctxLarissaFollowers, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Primeiro Perfil (2022)', 'Segundo Perfil (2023)'],
-                        datasets: [{
-                            label: 'Seguidores',
-                            data: [270000, 90000],
-                            backgroundColor: [
-                                'rgba(3, 105, 161, 0.6)', // sky-700
-                                'rgba(251, 146, 60, 0.6)' // amber-400
-                            ],
-                            borderColor: [
-                                'rgba(3, 105, 161, 1)',
-                                'rgba(251, 146, 60, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Crescimento de Seguidores no Instagram',
-                                color: '#334155'
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += new Intl.NumberFormat('pt-BR').format(context.parsed.y) + ' seguidores';
-                                        }
-                                        return label;
-                                    }
-                                }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('pt-BR', { notation: 'compact', compactDisplay: 'short' }).format(value);
+                                },
+                                color: '#475569'
                             }
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return new Intl.NumberFormat('pt-BR', { notation: 'compact', compactDisplay: 'short' }).format(value);
-                                    },
-                                    color: '#475569'
-                                }
-                            },
-                            x: {
-                                ticks: {
-                                    color: '#475569'
-                                }
+                        x: {
+                            ticks: {
+                                color: '#475569'
                             }
                         }
-                    }
-                });
-            }
-
-            // Larissa's Views Chart
-            const ctxLarissaViews = document.getElementById('larissaViewsChart')?.getContext('2d');
-            if (ctxLarissaViews) {
-                new Chart(ctxLarissaViews, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Primeiro Perfil (90 dias)', 'Segundo Perfil (30 dias)'],
-                        datasets: [{
-                            label: 'Visualizações',
-                            data: [9950207, 3440707],
-                            backgroundColor: [
-                                'rgba(3, 105, 161, 0.6)', // sky-700
-                                'rgba(251, 146, 60, 0.6)' // amber-400
-                            ],
-                            borderColor: [
-                                'rgba(3, 105, 161, 1)',
-                                'rgba(251, 146, 60, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Visualizações no Instagram',
-                                color: '#334155'
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += new Intl.NumberFormat('pt-BR').format(context.parsed.y) + ' visualizações';
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function(value) {
-                                        return new Intl.NumberFormat('pt-BR', { notation: 'compact', compactDisplay: 'short' }).format(value);
-                                    },
-                                    color: '#475569'
-                                }
-                            },
-                            x: {
-                                ticks: {
-                                    color: '#475569'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        });
-
-        // Function to show Pedro's profile content and hide Larissa's
-        function showPedroProfileContent() {
-            document.getElementById('pedro-main-content').classList.remove('hidden');
-            document.getElementById('larissa-profile-content').classList.add('hidden');
-        }
-
-        // Function to show Larissa's profile content and hide Pedro's
-        function showLarissaProfileContent() {
-            document.getElementById('pedro-main-content').classList.add('hidden');
-            document.getElementById('larissa-profile-content').classList.remove('hidden');
-        }
-
-        // Functions for buttons to switch profiles and scroll to top of the new profile content
-        function showPedroProfileAndScroll() {
-            showPedroProfileContent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showLarissaProfileAndScroll() {
-            showLarissaProfileContent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Handle navigation links
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevent default anchor jump
-
-                const targetId = event.target.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-
-                if (targetId === 'larissa-profile-content') { // This is for Larissa's profile page
-                    showLarissaProfileContent();
-                    // Scroll to top of Larissa's profile section
-                    document.getElementById('larissa-profile-content').scrollIntoView({ behavior: 'smooth' });
-                } else { // All other links lead to Pedro's main content
-                    showPedroProfileContent();
-                    // Scroll to the target element within Pedro's main content
-                    if (targetId === 'home') {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    } else if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
                     }
                 }
-
-                // Close mobile menu if open
-                mobileMenu.classList.add('hidden');
             });
-        });
+        }
 
-        // Ensure correct profile is shown on initial load based on hash
-        window.addEventListener('load', () => {
-             const currentHash = window.location.hash;
-             if (currentHash === '#larissa-profile-content') {
-                 showLarissaProfileContent();
-                 // Scroll to top of Larissa's content if directly accessed
-                 document.getElementById('larissa-profile-content').scrollIntoView();
-             } else {
-                 showPedroProfileContent();
-                 // Scroll to the specific section if a hash is present for Pedro's content
-                 if (currentHash && document.getElementById(currentHash.substring(1))) {
-                     document.getElementById(currentHash.substring(1)).scrollIntoView();
-                 }
+        // Larissa's Views Chart
+        const ctxLarissaViews = document.getElementById('larissaViewsChart')?.getContext('2d');
+        if (ctxLarissaViews) {
+            new Chart(ctxLarissaViews, {
+                type: 'bar',
+                data: {
+                    labels: ['Primeiro Perfil (90 dias)', 'Segundo Perfil (30 dias)'],
+                    datasets: [{
+                        label: 'Visualizações',
+                        data: [9950207, 3440707],
+                        backgroundColor: [
+                            'rgba(3, 105, 161, 0.6)', // sky-700
+                            'rgba(251, 146, 60, 0.6)' // amber-400
+                        ],
+                        borderColor: [
+                            'rgba(3, 105, 161, 1)',
+                            'rgba(251, 146, 60, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Visualizações no Instagram',
+                            color: '#334155'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('pt-BR').format(context.parsed.y) + ' visualizações';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('pt-BR', { notation: 'compact', compactDisplay: 'short' }).format(value);
+                                },
+                                color: '#475569'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#475569'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    // Function to show Pedro's profile content and hide Larissa's
+    function showPedroProfileContent() {
+        document.getElementById('pedro-main-content').classList.remove('hidden');
+        document.getElementById('larissa-profile-content').classList.add('hidden');
+    }
+
+    // Function to show Larissa's profile content and hide Pedro's
+    function showLarissaProfileContent() {
+        document.getElementById('pedro-main-content').classList.add('hidden');
+        document.getElementById('larissa-profile-content').classList.remove('hidden');
+    }
+
+    // Functions for buttons to switch profiles and scroll to top of the new profile content
+    function showPedroProfileAndScroll() {
+        showPedroProfileContent();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showLarissaProfileAndScroll() {
+        showLarissaProfileContent();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Handle navigation links
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default anchor jump
+
+            const targetId = event.target.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            if (targetId === 'larissa-profile-content') { // This is for Larissa's profile page
+                showLarissaProfileContent();
+                // Scroll to top of Larissa's profile section
+                document.getElementById('larissa-profile-content').scrollIntoView({ behavior: 'smooth' });
+            } else { // All other links lead to Pedro's main content
+                showPedroProfileContent();
+                // Scroll to the target element within Pedro's main content
+                if (targetId === 'home') { // Special case for "Home" to scroll to top of Pedro's main content
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (targetId === 'collaborators-company-info') { // Special case for "Empresa" link
+                    document.getElementById('collaborators').scrollIntoView({ behavior: 'smooth' }); // Scroll to collaborators section first
+                    // Then scroll to the company info within it
+                    setTimeout(() => {
+                        document.getElementById('collaborators-company-info').scrollIntoView({ behavior: 'smooth' });
+                    }, 100); // Small delay
+                }
+                else if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Close mobile menu if open
+            mobileMenu.classList.add('hidden');
+        });
+    });
+
+    // Ensure correct profile is shown on initial load based on hash
+    window.addEventListener('load', () => {
+         const currentHash = window.location.hash;
+         if (currentHash === '#larissa-profile-content') {
+             showLarissaProfileContent();
+             // Scroll to top of Larissa's content if directly accessed
+             document.getElementById('larissa-profile-content').scrollIntoView();
+         } else {
+             showPedroProfileContent();
+             // Scroll to the specific section if a hash is present for Pedro's content
+             if (currentHash && document.getElementById(currentHash.substring(1))) {
+                 document.getElementById(currentHash.substring(1)).scrollIntoView();
              }
-        });
-    </script>
-</body>
-</html>
+         }
+    });
+</script>
