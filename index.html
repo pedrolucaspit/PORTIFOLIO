@@ -50,6 +50,7 @@
         - UPDATE: Removed the impact statistics block from `pedro-full-profile-content` and updated the text for financial experience in Pedro's full profile.
         - FIX: Re-added the impact statistics block to the `home` section (Company About Section) and removed it from `pedro-full-profile-content`.
         - FIX: Moved the impact statistics block within the `home` section to appear before "Serviços Prestados".
+        - FIX: Refactored visibility logic to use a single `toggleSectionVisibility` helper function and updated all navigation and button click handlers to use it, ensuring all sections are correctly hidden/shown and scrolled to.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -256,7 +257,7 @@
                     
                     <article class="project-card bg-white border border-slate-200 rounded-xl p-6 flex flex-col" data-category="gestao">
                         <h3 class="text-xl font-bold text-slate-900">Otimização para Empresa Financeira</h3>
-                        <p class="text-slate-600 flex-grow">Automação de processos manuais e implementação de gestão do conhecimento, resultando em 70% de ganho de eficiência.</p>
+                        <p class="text-slate-600 flex-grow">Automação de processos manuais e implementação de gestão do conhecimento, resultando in 70% de ganho de eficiência.</p>
                         <div class="mt-4">
                             <span class="inline-block bg-sky-100 text-sky-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Digitalização</span>
                             </div>
@@ -827,50 +828,40 @@
             }
         });
 
-        // Function to show Pedro's main content sections (Company, Projects, Skills, Collaborators)
-        function showPedroMainSectionsContent() {
-            document.getElementById('home').classList.remove('hidden'); // Show Company Info
-            document.getElementById('projects').classList.remove('hidden'); // Show Projects
-            document.getElementById('skills').classList.remove('hidden'); // Show Skills
-            document.getElementById('collaborators').classList.remove('hidden'); // Show Collaborators
-            document.getElementById('pedro-full-profile-content').classList.add('hidden'); // Hide Pedro's Full Profile
-            document.getElementById('larissa-profile-content').classList.add('hidden'); // Hide Larissa's profile
-        }
+        // Function to show a specific content section and hide others
+        function toggleSectionVisibility(sectionToShowId) {
+            const sections = ['home', 'projects', 'skills', 'collaborators', 'pedro-full-profile-content', 'larissa-profile-content', 'contact'];
+            
+            sections.forEach(id => {
+                const sectionElement = document.getElementById(id);
+                if (sectionElement) { // Check if element exists before manipulating classList
+                    if (id === sectionToShowId) {
+                        sectionElement.classList.remove('hidden');
+                    } else {
+                        sectionElement.classList.add('hidden');
+                    }
+                }
+            });
 
-        // Function to show Pedro's Full Profile content
-        function showPedroFullProfileContent() {
-            document.getElementById('home').classList.add('hidden'); // Hide Company Info
-            document.getElementById('projects').classList.add('hidden'); // Hide Projects
-            document.getElementById('skills').classList.add('hidden'); // Hide Skills
-            document.getElementById('collaborators').classList.add('hidden'); // Hide Collaborators
-            document.getElementById('pedro-full-profile-content').classList.remove('hidden'); // Show Pedro's Full Profile
-            document.getElementById('larissa-profile-content').classList.add('hidden'); // Hide Larissa's profile
-        }
-
-        // Function to show Larissa's profile content
-        function showLarissaProfileContent() {
-            document.getElementById('home').classList.add('hidden'); // Hide Company Info
-            document.getElementById('projects').classList.add('hidden'); // Hide Projects
-            document.getElementById('skills').classList.add('hidden'); // Hide Skills
-            document.getElementById('collaborators').classList.add('hidden'); // Hide Collaborators
-            document.getElementById('pedro-full-profile-content').classList.add('hidden'); // Hide Pedro's Full Profile
-            document.getElementById('larissa-profile-content').classList.remove('hidden'); // Show Larissa's profile
+            // Scroll to the top of the displayed section
+            const targetElement = document.getElementById(sectionToShowId);
+            if (targetElement) {
+                window.scrollTo({ top: targetElement.offsetTop, behavior: 'smooth' });
+            }
         }
 
         // Functions for buttons to switch profiles and scroll to top of the new content
         function showPedroMainSectionsAndScroll() {
-            showPedroMainSectionsContent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            toggleSectionVisibility('home'); // Go back to company info as main sections are part of it
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of the page
         }
 
         function showPedroFullProfileAndScroll() {
-            showPedroFullProfileContent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            toggleSectionVisibility('pedro-full-profile-content');
         }
 
         function showLarissaProfileAndScroll() {
-            showLarissaProfileContent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            toggleSectionVisibility('larissa-profile-content');
         }
 
         // Handle navigation links
@@ -879,42 +870,7 @@
                 event.preventDefault(); // Prevent default anchor jump
 
                 const targetId = event.target.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-
-                // Hide all main sections first
-                document.getElementById('home').classList.add('hidden');
-                document.getElementById('projects').classList.add('hidden');
-                document.getElementById('skills').classList.add('hidden');
-                document.getElementById('collaborators').classList.add('hidden');
-                document.getElementById('pedro-full-profile-content').classList.add('hidden');
-                document.getElementById('larissa-profile-content').classList.add('hidden');
-                document.getElementById('contact').classList.add('hidden'); // Ensure contact is hidden if not target
-                
-                // Then show the target section
-                if (targetId === 'home') { // Empresa link / Home link
-                    document.getElementById('home').classList.remove('hidden');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else if (targetId === 'pedro-full-profile-content') { // "Sobre" link (Pedro's full profile)
-                    document.getElementById('pedro-full-profile-content').classList.remove('hidden');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else if (targetId === 'projects') { // Projects section
-                    document.getElementById('projects').classList.remove('hidden');
-                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
-                } else if (targetId === 'skills') { // Skills section
-                    document.getElementById('skills').classList.remove('hidden');
-                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
-                } else if (targetId === 'collaborators') { // Collaborators section
-                    document.getElementById('collaborators').classList.remove('hidden');
-                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
-                } else if (targetId === 'larissa-profile-content') { // Larissa's profile page
-                    document.getElementById('larissa-profile-content').classList.remove('hidden');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else if (targetId === 'contact') { // Contact section
-                    document.getElementById('contact').classList.remove('hidden'); // Ensure contact is visible
-                    setTimeout(() => {
-                        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                }
+                toggleSectionVisibility(targetId);
 
                 // Close mobile menu if open
                 mobileMenu.classList.add('hidden');
@@ -923,30 +879,11 @@
 
         // Initial load logic
         window.addEventListener('load', () => {
-             const currentHash = window.location.hash;
-             if (currentHash === '#larissa-profile-content') {
-                 showLarissaProfileContent();
-                 document.getElementById('larissa-profile-content').scrollIntoView();
-             } else if (currentHash === '#pedro-full-profile-content') { // If hash is #pedro-full-profile-content, show Pedro's full profile
-                 showPedroFullProfileContent();
-                 document.getElementById('pedro-full-profile-content').scrollIntoView();
+             const currentHash = window.location.hash.substring(1);
+             if (currentHash && document.getElementById(currentHash)) {
+                 toggleSectionVisibility(currentHash);
              } else { // Default to Company Info (home)
-                 // Hide all sections first
-                 document.getElementById('projects').classList.add('hidden');
-                 document.getElementById('skills').classList.add('hidden');
-                 document.getElementById('collaborators').classList.add('hidden');
-                 document.getElementById('pedro-full-profile-content').classList.add('hidden');
-                 document.getElementById('larissa-profile-content').classList.add('hidden');
-                 document.getElementById('contact').classList.add('hidden'); // Ensure contact is hidden if not target
-
-                 // Show the default home section
-                 document.getElementById('home').classList.remove('hidden');
-                 
-                 if (currentHash && document.getElementById(currentHash.substring(1))) {
-                     document.getElementById(currentHash.substring(1)).scrollIntoView();
-                 } else {
-                     window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top if no specific hash
-                 }
+                 toggleSectionVisibility('home');
              }
         });
     </script>
