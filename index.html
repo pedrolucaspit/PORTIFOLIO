@@ -51,6 +51,7 @@
         - FIX: Re-added the impact statistics block to the `home` section (Company About Section) and removed it from `pedro-full-profile-content`.
         - FIX: Moved the impact statistics block within the `home` section to appear before "Serviços Prestados".
         - FIX: Refactored visibility logic to use a single `toggleSectionVisibility` helper function and updated all navigation and button click handlers to use it, ensuring all sections are correctly hidden/shown and scrolled to.
+        - FIX: The `main` tag now contains all possible sections, with `hidden` class applied by default to all except `home`. The `toggleSectionVisibility` function now correctly manages these top-level sections.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -846,13 +847,15 @@
             // Scroll to the top of the displayed section
             const targetElement = document.getElementById(sectionToShowId);
             if (targetElement) {
-                window.scrollTo({ top: targetElement.offsetTop, behavior: 'smooth' });
+                setTimeout(() => {
+                    window.scrollTo({ top: targetElement.offsetTop, behavior: 'smooth' });
+                }, 50); // 50ms delay
             }
         }
 
         // Functions for buttons to switch profiles and scroll to top of the new content
         function showPedroMainSectionsAndScroll() {
-            toggleSectionVisibility('home'); // Go back to company info as main sections are part of it
+            toggleSectionVisibility('home'); // Default to Company Info
             window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of the page
         }
 
